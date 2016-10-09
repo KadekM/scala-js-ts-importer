@@ -5,7 +5,7 @@
 
 package org.scalajs.tools.tsimporter
 
-import Trees.{ TypeRef => TypeRefTree, _ }
+import Trees.{ TypeRef => TypeRefTree, TypeRefLike => TypeRefLikeTree, _ }
 import sc._
 
 /** The meat and potatoes: the importer
@@ -251,6 +251,12 @@ class Importer(val output: java.io.PrintWriter) {
 
       case ObjectType(members) =>
         // ???
+        TypeRef.Any
+
+      case StructTypeRef(members) =>
+        // TODO ???
+        //TypeRef(QualifiedName.Anonymous(body.toString))
+        val body = processMembersDecls(new ContainerSymbol(Name.EMPTY), new ContainerSymbol(Name.EMPTY), members)
         TypeRef.Any
 
       case FunctionType(FunSignature(tparams, params, Some(resultType))) =>

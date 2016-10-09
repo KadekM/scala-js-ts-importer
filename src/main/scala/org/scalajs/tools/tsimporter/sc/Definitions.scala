@@ -53,6 +53,7 @@ object QualifiedName {
   val FunctionBase = scala_js dot Name("Function")
   def Function(arity: Int) = scala_js dot Name("Function"+arity)
   def Tuple(arity: Int) = scala_js dot Name("Tuple"+arity)
+  def Anonymous(txt: String) = scala dot Name(txt)
   val Union = scala_js dot Name("|")
 }
 
