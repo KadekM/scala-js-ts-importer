@@ -26,6 +26,8 @@ object Trees {
   sealed trait TypeTree extends Tree
   sealed trait MemberTree extends Tree
 
+  sealed trait TypeRefLike extends TypeTree
+
   // Identifiers and properties
 
   sealed trait PropertyName extends TermTree {
@@ -77,7 +79,7 @@ object Trees {
 
   // Type parameters
 
-  case class TypeParam(name: TypeName, upperBound: Option[TypeRef]) extends Tree
+  case class TypeParam(name: TypeName, upperBound: Option[TypeRefLike]) extends Tree
 
   // Literals
 
@@ -102,16 +104,19 @@ object Trees {
   case class EnumDecl(name: TypeName, members: List[Ident]) extends DeclTree
 
   case class ClassDecl(name: TypeName, tparams: List[TypeParam],
-      parent: Option[TypeRef], implements: List[TypeRef],
+      parent: Option[TypeRefLike], implements: List[TypeRefLike],
       membmers: List[MemberTree]) extends DeclTree
 
   case class InterfaceDecl(name: TypeName, tparams: List[TypeParam],
-      inheritance: List[TypeRef], members: List[MemberTree]) extends DeclTree
+      inheritance: List[TypeRefLike], members: List[MemberTree]) extends DeclTree
 
   case class TypeAliasDecl(name: TypeName, tparams: List[TypeParam],
       alias: TypeTree) extends DeclTree
 
-  case class TypeRef(name: BaseTypeRef, tparams: List[TypeTree] = Nil) extends TypeTree
+
+  case class TypeRef(name: BaseTypeRef, tparams: List[TypeTree] = Nil) extends TypeRefLike
+
+  case class StructTypeRef(membmers: List[MemberTree] = Nil) extends TypeRefLike
 
   sealed abstract class BaseTypeRef extends Tree
 

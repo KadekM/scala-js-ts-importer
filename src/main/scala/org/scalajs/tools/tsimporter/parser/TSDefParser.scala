@@ -189,10 +189,12 @@ class TSDefParser extends StdTokenParsers with ImplicitConversions {
     | "(" ~> typeDesc <~ ")"
   )
 
-  lazy val typeRef: Parser[TypeRef] =
+  lazy val typeRef: Parser[TypeRefLike] =
     baseTypeRef ~ opt(typeArgs) ^^ {
       case base ~ optTargs =>
         TypeRef(base, optTargs getOrElse Nil)
+    } | memberBlock ^^ {
+      m => StructTypeRef(m)
     }
 
   lazy val baseTypeRef: Parser[BaseTypeRef] =
